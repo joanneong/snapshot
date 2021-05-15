@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class WebControllerIntegrationTest {
+public class ReviewControllerIntegrationTest {
     @LocalServerPort
     private int port;
 
@@ -26,11 +26,5 @@ public class WebControllerIntegrationTest {
     @BeforeEach
     public void setUp() throws Exception {
         this.base = new URL("http://localhost:" + port + "/");
-    }
-
-    @Test
-    public void getHomePage() throws Exception {
-        ResponseEntity<String> response = template.getForEntity(base.toString(), String.class);
-        assertThat(response.getBody()).isEqualTo("Greetings from snapshot!");
     }
 }
