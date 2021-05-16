@@ -14,3 +14,4 @@
 
 The application relies on JPA (Java Persistence API) to communicate with an SQL database without having to define SQL queries manually.
 
+For review table, we are using single table as an inheritance strategy for performance reasons.

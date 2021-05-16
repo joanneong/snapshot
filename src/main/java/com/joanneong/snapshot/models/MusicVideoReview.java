@@ -1,90 +1,30 @@
 package com.joanneong.snapshot.models;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Objects;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
-public class MusicVideoReview implements Review {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+@DiscriminatorValue("music_video")
+@Table(name = "music_video_reviews")
+public class MusicVideoReview extends Review {
 
-    private String title;
+    @ManyToOne
+    @JoinColumn(name = "music_video_id")
+    private MusicVideo musicVideo;
 
-    private String content;
-
-    private String musicVideoId;
-
-    MusicVideoReview(Long id, String title, String content, String musicVideoId) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.musicVideoId = musicVideoId;
+    MusicVideoReview(Long id, int rating, String title, String content, MusicVideo musicVideo) {
+        super(id, rating, title, content);
+        this.musicVideo = musicVideo;
     }
 
-    public Long getId() {
-        return id;
+    public MusicVideo getMusicVideo() {
+        return musicVideo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setMusicVideo(MusicVideo musicVideo) {
+        this.musicVideo = musicVideo;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getMusicVideoId() {
-        return musicVideoId;
-    }
-
-    public void setMusicVideoId(String musicVideoId) {
-        this.musicVideoId = musicVideoId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-
-        if (!(o instanceof MusicVideoReview)) {
-            return false;
-        }
-
-        MusicVideoReview musicVideoReview = (MusicVideoReview) o;
-
-        return Objects.equals(this.id, musicVideoReview.id)
-                && Objects.equals(this.title, musicVideoReview.title)
-                && Objects.equals(this.content, musicVideoReview.content)
-                && Objects.equals(this.musicVideoId, musicVideoReview.musicVideoId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.id, this.title, this.content, this.musicVideoId);
-    }
-
-    @Override
-    public String toString() {
-        return "MusicVideoReview{"
-                + "id=" + this.id
-                + ", title='" + this.title + '\''
-                + ", musicVideoId='" + this.musicVideoId + '\''
-                + '}';    }
 }
