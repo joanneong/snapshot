@@ -1,43 +1,53 @@
 package com.joanneong.snapshot.models;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "review_type")
 @Table(name = "reviews")
 public class Review {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @Column(name = "review_id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
     private int rating;
 
+    @NotNull
     private String title;
 
+    @NotNull
     private String content;
 
     @Column(name = "created_on")
+    @NotNull
     private LocalDateTime createdOn;
 
     @Column(name = "last_modified_on")
+    @NotNull
     private LocalDateTime lastModifiedOn;
 
-    Review(Long id, int rating, String title, String content) {
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NotNull
+    private User creator;
+
+    Review(Long id, int rating, String title, String content, User creator) {
         this.id = id;
         this.rating = rating;
         this.title = title;
         this.content = content;
+        this.creator = creator;
     }
 
     public Long getId() {
@@ -88,38 +98,49 @@ public class Review {
         this.lastModifiedOn = lastModifiedOn;
     }
 
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
 
-        if (!(o instanceof Review)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         Review review = (Review) o;
-
-        return Objects.equals(this.id, review.id)
-                && Objects.equals(this.rating, review.rating)
-                && Objects.equals(this.title, review.title)
-                && Objects.equals(this.content, review.content);
+        return rating == review.rating
+                && id.equals(review.id)
+                && title.equals(review.title)
+                && content.equals(review.content)
+                && createdOn.equals(review.createdOn)
+                && creator.equals(review.creator);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.rating, this.title, this.content);
+        return Objects.hash(id, rating, title, content, createdOn, creator);
     }
 
     @Override
     public String toString() {
-        return "Review={"
-                + " id='" + this.id + '\''
-                + " rating='" + this.rating + '\''
-                + " title='" + this.title + '\''
-                + " content='" + this.content + '\''
-                + " created on='" + this.createdOn + '\''
-                + " last modified on='" + this.lastModifiedOn + '\''
-                + '}';
+        return "Review{" +
+                "id=" + id +
+                ", rating=" + rating +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", createdOn=" + createdOn +
+                ", lastModifiedOn=" + lastModifiedOn +
+                ", creator=" + creator.toString() +
+                '}';
     }
+
 }
