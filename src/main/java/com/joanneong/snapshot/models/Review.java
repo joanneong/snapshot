@@ -42,11 +42,14 @@ public class Review {
     @NotNull
     private User creator;
 
-    Review(Long id, int rating, String title, String content, User creator) {
+    public Review(Long id, @NotNull int rating, @NotNull String title, @NotNull String content,
+                  @NotNull LocalDateTime createdOn, @NotNull LocalDateTime lastModifiedOn, @NotNull User creator) {
         this.id = id;
         this.rating = rating;
         this.title = title;
         this.content = content;
+        this.createdOn = createdOn;
+        this.lastModifiedOn = lastModifiedOn;
         this.creator = creator;
     }
 

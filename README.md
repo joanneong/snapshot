@@ -10,11 +10,14 @@
 
 ## Technical guide
 
+### Models
+
+The models present in `models` are all POJOs (Plain Old Java Objects), and are used to translate data betwen the database and 
+the application.
+
 ### Database
 
 The application relies on JPA (Java Persistence API) to communicate with an SQL database without having to define SQL queries manually.
-
-For review table, we are using single table as an inheritance strategy for performance reasons.
 
 See the database structure using the in-memory H2 database at ```localhost:8080/h2```. Connect with the default settings 
 (if that does not work, check that the settings are the same as configured in `application.properties`). This database is 

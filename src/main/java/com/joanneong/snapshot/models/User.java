@@ -17,15 +17,23 @@ public class User {
     private Long id;
 
     @NotNull
+    @Column(unique = true)
     private String name;
 
+    /**
+     * Store hash of salted password instead of plaintext
+     */
     @NotNull
-    private String email;
+    private String password;
 
-    public User(Long id, String name, String email) {
+    @NotNull
+    private UserRole role;
+
+    public User(Long id, @NotNull String name, @NotNull String password, @NotNull UserRole role) {
         this.id = id;
         this.name = name;
-        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     public Long getId() {
@@ -44,20 +52,27 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPassword() {
+        return password;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
+                ", name='" + name +
                 '}';
     }
 }

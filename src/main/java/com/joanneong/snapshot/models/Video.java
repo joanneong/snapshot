@@ -42,7 +42,8 @@ public class Video {
     @NotNull
     private List<Review> reviews;
 
-    public Video(String id, String title, VideoType videoType, String thumbnailUrl, List<Review> reviews) {
+    public Video(@NotNull String id, @NotNull String title, @NotNull VideoType videoType, @NotNull String thumbnailUrl,
+                 @NotNull List<Review> reviews) {
         this.id = id;
         this.title = title;
         this.videoType = videoType;
