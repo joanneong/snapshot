@@ -42,8 +42,14 @@ public class Review {
     @NotNull
     private User creator;
 
+    @ManyToOne
+    @JoinColumn(name = "video_id")
+    @NotNull
+    private Video video;
+
     public Review(Long id, @NotNull int rating, @NotNull String title, @NotNull String content,
-                  @NotNull LocalDateTime createdOn, @NotNull LocalDateTime lastModifiedOn, @NotNull User creator) {
+                  @NotNull LocalDateTime createdOn, @NotNull LocalDateTime lastModifiedOn, @NotNull User creator,
+                  @NotNull Video video) {
         this.id = id;
         this.rating = rating;
         this.title = title;
@@ -51,6 +57,7 @@ public class Review {
         this.createdOn = createdOn;
         this.lastModifiedOn = lastModifiedOn;
         this.creator = creator;
+        this.video = video;
     }
 
     public Long getId() {
@@ -109,6 +116,14 @@ public class Review {
         this.creator = creator;
     }
 
+    public Video getVideo() {
+        return video;
+    }
+
+    public void setVideo(Video video) {
+        this.video = video;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -125,12 +140,13 @@ public class Review {
                 && title.equals(review.title)
                 && content.equals(review.content)
                 && createdOn.equals(review.createdOn)
-                && creator.equals(review.creator);
+                && creator.equals(review.creator)
+                && video.equals(review.video);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rating, title, content, createdOn, creator);
+        return Objects.hash(id, rating, title, content, createdOn, creator, video);
     }
 
     @Override
@@ -140,10 +156,10 @@ public class Review {
                 ", rating=" + rating +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", createdOn=" + createdOn +
-                ", lastModifiedOn=" + lastModifiedOn +
-                ", creator=" + creator.toString() +
+                ", createdOn=" + createdOn + '\'' +
+                ", lastModifiedOn=" + lastModifiedOn + '\'' +
+                ", creator=" + creator.toString() + '\'' +
+                ", video=" + video.toString() +
                 '}';
     }
-
 }
