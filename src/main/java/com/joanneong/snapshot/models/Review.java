@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -21,12 +22,13 @@ public class Review {
     private Long id;
 
     @NotNull
-    private int rating;
+    private double rating;
 
     @NotNull
     private String title;
 
     @NotNull
+    @Lob
     private String content;
 
     @Column(name = "created_on")
@@ -47,7 +49,7 @@ public class Review {
     @NotNull
     private Video video;
 
-    public Review(Long id, @NotNull int rating, @NotNull String title, @NotNull String content,
+    public Review(Long id, @NotNull double rating, @NotNull String title, @NotNull String content,
                   @NotNull LocalDateTime createdOn, @NotNull LocalDateTime lastModifiedOn, @NotNull User creator,
                   @NotNull Video video) {
         this.id = id;
@@ -68,11 +70,11 @@ public class Review {
         this.id = id;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
