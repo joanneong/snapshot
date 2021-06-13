@@ -15,6 +15,16 @@
 The models present in `models` are all POJOs (Plain Old Java Objects), and are used to translate data betwen the database and 
 the application.
 
+### Controllers
+
+Single responsibility: handle incoming requests
+
+### Services
+
+Additional service layer to prevent direct access to DAO from controller
+
+Single responsibility: handle logic required for data from controller
+
 ### Database
 
 The application relies on JPA (Java Persistence API) to communicate with an SQL database without having to define SQL queries manually.

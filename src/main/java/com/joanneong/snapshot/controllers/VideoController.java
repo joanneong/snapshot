@@ -1,7 +1,8 @@
 package com.joanneong.snapshot.controllers;
 
-import com.joanneong.snapshot.models.User;
 import com.joanneong.snapshot.models.Video;
+import com.joanneong.snapshot.services.IVideoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +15,23 @@ import java.util.Collection;
 @RestController
 @RequestMapping("/api")
 public class VideoController {
+    @Autowired
+    IVideoService videoService;
+
     /**
      * Gets all videos currently saved in the database
      */
     @GetMapping("/videos")
     public Collection<Video> getAllVideos() {
-        return null;
+        return videoService.getAllVideos();
+    }
+
+    /**
+     * Gets all videos for a given list of video ids
+     */
+    @GetMapping("/videos/search_ids")
+    public Collection<Video> getVideosByIds(@RequestBody Collection<String> videoIds) {
+        return videoService.getVideosByIds(videoIds);
     }
 
     /**
@@ -27,15 +39,7 @@ public class VideoController {
      */
     @GetMapping("/videos/search_query")
     public Collection<Video> searchVideosByQuery(@RequestParam("query") String searchQuery) {
-        return null;
-    }
-
-    /**
-     * Gets all videos filtered by a given user
-     */
-    @PostMapping("/videos/search_user")
-    public Collection<Video> searchVideosByUser(@RequestBody User user) {
-        return null;
+        return videoService.searchVideosByQuery(searchQuery);
     }
 
     /**
@@ -43,8 +47,8 @@ public class VideoController {
      * This means that the video has at least one review associated with it
      */
     @PostMapping("/video/add_video")
-    public void addVideo(@RequestBody Video video) {
-
+    public Video addVideo(@RequestBody Video video) {
+        return videoService.addVideo(video);
     }
 
     /**
@@ -52,8 +56,8 @@ public class VideoController {
      * This should not be called unless there are changes on Youtube's end
      */
     @PostMapping("/video/edit_video")
-    public void editVideo(@RequestBody Video review) {
-
+    public void editVideo(@RequestBody Video video) {
+        videoService.editVideo(video);
     }
 
     /**
@@ -63,6 +67,6 @@ public class VideoController {
      */
     @PostMapping("/video/delete_video")
     public void deleteVideo(@RequestBody Video video) {
-
+        videoService.deleteVideo(video);
     }
 }
