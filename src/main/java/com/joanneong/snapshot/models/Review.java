@@ -22,7 +22,7 @@ public class Review {
     private Long id;
 
     @NotNull
-    private double rating;
+    private Double rating;
 
     @NotNull
     private String title;
@@ -42,15 +42,23 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
-    private User creator;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "video_id")
     @NotNull
     private Video video;
 
+    /**
+     * Default constructor needed as Hibernate creates a bean via reflection
+     * by calling the default constructor and then setter methods to set properties
+     */
+    public Review() {
+
+    }
+
     public Review(Long id, @NotNull double rating, @NotNull String title, @NotNull String content,
-                  @NotNull LocalDateTime createdOn, @NotNull LocalDateTime lastModifiedOn, @NotNull User creator,
+                  @NotNull LocalDateTime createdOn, @NotNull LocalDateTime lastModifiedOn, @NotNull User user,
                   @NotNull Video video) {
         this.id = id;
         this.rating = rating;
@@ -58,7 +66,7 @@ public class Review {
         this.content = content;
         this.createdOn = createdOn;
         this.lastModifiedOn = lastModifiedOn;
-        this.creator = creator;
+        this.user = user;
         this.video = video;
     }
 
@@ -110,12 +118,12 @@ public class Review {
         this.lastModifiedOn = lastModifiedOn;
     }
 
-    public User getCreator() {
-        return creator;
+    public User getUser() {
+        return user;
     }
 
-    public void setCreator(User creator) {
-        this.creator = creator;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Video getVideo() {
@@ -142,13 +150,13 @@ public class Review {
                 && title.equals(review.title)
                 && content.equals(review.content)
                 && createdOn.equals(review.createdOn)
-                && creator.equals(review.creator)
+                && user.equals(review.user)
                 && video.equals(review.video);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, rating, title, content, createdOn, creator, video);
+        return Objects.hash(id, rating, title, content, createdOn, user, video);
     }
 
     @Override
@@ -160,7 +168,7 @@ public class Review {
                 ", content='" + content + '\'' +
                 ", createdOn=" + createdOn + '\'' +
                 ", lastModifiedOn=" + lastModifiedOn + '\'' +
-                ", creator=" + creator.toString() + '\'' +
+                ", creator=" + user.toString() + '\'' +
                 ", video=" + video.toString() +
                 '}';
     }

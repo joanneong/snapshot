@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +20,7 @@ public class ReviewService implements IReviewService {
     public Collection<Double> getAvgRatings(Collection<Video> videos) {
         return videos.stream()
                 .map(video -> reviewRepository.getAverageRatingForVideo(video.getId()))
+                .map(rating -> rating == null ? 0.0 : rating)
                 .collect(Collectors.toList());
     }
 
@@ -29,24 +31,25 @@ public class ReviewService implements IReviewService {
 
     @Override
     public Collection<Review> getReviewsByUser(User user) {
-        return reviewRepository.findByCreator(user.getId());
+        return reviewRepository.findByUserId(user.getId());
     }
 
     @Override
-    public Review addReview(Review review) {
-        return reviewRepository.save(review);
+    public Optional<Review> addReview(Review review) {
+        return Optional.of(reviewRepository.save(review));
     }
 
     @Override
-    public void editReview(Review review) {
-        reviewRepository.findById(review.getId())
-                .ifPresent(originalReview -> {
+    public Optional<Review> editReview(Review review) {
+        return reviewRepository.findById(review.getId())
+                .map(originalReview -> {
                     originalReview.setTitle(review.getTitle());
                     originalReview.setContent(review.getContent());
                     originalReview.setRating(review.getRating());
                     originalReview.setLastModifiedOn(review.getLastModifiedOn());
-                    reviewRepository.save(originalReview);
-                });
+                    return reviewRepository.save(originalReview);
+                })
+                .map(Review.class::cast);
     }
 
     @Override

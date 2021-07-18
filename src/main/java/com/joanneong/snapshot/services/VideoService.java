@@ -1,11 +1,13 @@
 package com.joanneong.snapshot.services;
 
 import com.joanneong.snapshot.data.VideoRepository;
+import com.joanneong.snapshot.models.Review;
 import com.joanneong.snapshot.models.Video;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class VideoService implements IVideoService {
@@ -26,25 +28,32 @@ public class VideoService implements IVideoService {
     }
 
     @Override
+    public Optional<Video> getVideoById(String videoId) {
+        return videoRepository.findById(videoId);
+    }
+
+    @Override
     public Collection<Video> searchVideosByQuery(String searchQuery) {
         return youTubeService.searchVideosByQuery(searchQuery);
     }
 
     @Override
-    public Video addVideo(Video video) {
-        return videoRepository.findById(video.getId())
+    public Optional<Video> addVideo(Video video) {
+        Video savedVideo = videoRepository.findById(video.getId())
                 .orElseGet(() -> videoRepository.save(video));
+        return Optional.of(savedVideo);
     }
 
     @Override
-    public void editVideo(Video video) {
-        videoRepository.findById(video.getId())
-                .ifPresent(originalVideo -> {
+    public Optional<Video> editVideo(Video video) {
+        return videoRepository.findById(video.getId())
+                .map(originalVideo -> {
                     originalVideo.setTitle(video.getTitle());
                     originalVideo.setThumbnailUrl(video.getThumbnailUrl());
                     originalVideo.setVideoType(video.getVideoType());
-                    videoRepository.save(originalVideo);
-                });
+                    return videoRepository.save(originalVideo);
+                })
+                .map(Video.class::cast);
     }
 
     @Override

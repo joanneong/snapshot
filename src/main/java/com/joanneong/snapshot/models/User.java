@@ -2,6 +2,8 @@ package com.joanneong.snapshot.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,8 +28,17 @@ public class User {
     @NotNull
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     private UserRole role;
+
+    /**
+     * Default constructor needed as Hibernate creates a bean via reflection
+     * by calling the default constructor and then setter methods to set properties
+     */
+    public User() {
+
+    }
 
     public User(Long id, @NotNull String name, @NotNull String password, @NotNull UserRole role) {
         this.id = id;
