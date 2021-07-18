@@ -20,11 +20,6 @@ public class Video {
     @NotNull
     private String title;
 
-    /**
-     * Persist string representation of enum in database
-     * instead of ordinal value (default) so that it is
-     * safer to add and remove enum types
-     */
     @Column(name = "video_type")
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -33,6 +28,14 @@ public class Video {
     @Column(name = "thumbnail_url")
     @NotNull
     private String thumbnailUrl;
+
+    /**
+     * Default constructor needed as Hibernate creates a bean via reflection
+     * by calling the default constructor and then setter methods to set properties
+     */
+    public Video() {
+
+    }
 
     public Video(@NotNull String id, @NotNull String title, @NotNull VideoType videoType, @NotNull String thumbnailUrl) {
         this.id = id;

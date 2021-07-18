@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -54,7 +55,7 @@ public class ReviewController {
      * Saves a review to the database
      */
     @PostMapping("/review/add_review")
-    public Review addReview(@RequestBody Review review) {
+    public Optional<Review> addReview(@RequestBody Review review) {
         return reviewService.addReview(review);
     }
 
@@ -62,8 +63,8 @@ public class ReviewController {
      * Edits a review in the database
      */
     @PostMapping("/review/edit_review")
-    public void editReview(@RequestBody Review review) {
-        reviewService.editReview(review);
+    public Optional<Review> editReview(@RequestBody Review review) {
+        return reviewService.editReview(review);
     }
 
     /**

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -47,7 +48,7 @@ public class VideoController {
      * This means that the video has at least one review associated with it
      */
     @PostMapping("/video/add_video")
-    public Video addVideo(@RequestBody Video video) {
+    public Optional<Video> addVideo(@RequestBody Video video) {
         return videoService.addVideo(video);
     }
 
@@ -56,8 +57,8 @@ public class VideoController {
      * This should not be called unless there are changes on Youtube's end
      */
     @PostMapping("/video/edit_video")
-    public void editVideo(@RequestBody Video video) {
-        videoService.editVideo(video);
+    public Optional<Video> editVideo(@RequestBody Video video) {
+        return videoService.editVideo(video);
     }
 
     /**

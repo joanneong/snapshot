@@ -5,6 +5,7 @@ import com.joanneong.snapshot.models.User;
 import com.joanneong.snapshot.models.Video;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface IReviewService {
     Collection<Double> getAvgRatings(Collection<Video> videos);
@@ -13,9 +14,9 @@ public interface IReviewService {
 
     Collection<Review> getReviewsByUser(User user);
 
-    Review addReview(Review review);
+    Optional<Review> addReview(Review review);
 
-    void editReview(Review review);
+    Optional<Review> editReview(Review review);
 
     void deleteReview(Review review);
 }
